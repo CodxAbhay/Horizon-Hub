@@ -23,8 +23,8 @@
 
   <% if (currentUser && currentUser._id.equals(listing.owner._id)) { %>
   <div class="card-body d-flex align-items-center gap-2 mb-3">
-    <a href="http://localhost:8080/listings/<%= listing._id %>/edit" class="card-link"><button class="btn  btn-primary ">EDIT</button></a>
-    <form method="post" action="http://localhost:8080/listings/<%= listing._id %>?_method=DELETE">
+    <a href="/listings/<%= listing._id %>/edit" class="card-link"><button class="btn  btn-primary ">EDIT</button></a>
+    <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
       <button class=" btn  btn-danger ">DELETE</button>
     </form>
   </div>

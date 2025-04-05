@@ -7,7 +7,7 @@
 <div class="row mt-3">
     <% for (let list of allListing) { %>
         <div class="card listing-card container-fluid " style="width: 20rem;">
-            <a href="http://localhost:8080/listings/<%= list._id %>">
+            <a href="/listings/<%= list._id %>">
                 <img src="<%= list.image.url %>" class="card-img-top " alt="Image" style="height: 17rem;">
             </a>
             <div class="card-body">
