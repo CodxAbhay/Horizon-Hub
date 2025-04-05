@@ -1,0 +1,144 @@
+/* To use static file like css or anything in other ejs file then you have to write 
+- app.use(express.static(path.join(__dirname, '/public')));
+in app.js file. */  
+
+
+
+
+.roboto-body {
+    font-family: "Roboto", serif !important;
+    font-optical-sizing: auto !important;
+    font-weight: 100 !important;
+    font-style: normal !important; 
+    font-variation-settings:
+      "wdth" 100 !important;
+  }
+
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+
+.navbar{
+    background-color: #333;
+    color: white;
+    height: 100%;
+}
+
+.navbar-brand{
+    color: #fe424d !important;
+    font-size: 2rem;
+}
+
+.nav-link{
+    color: #222 !important;  /* !important is used to override the default color of bootstrap */
+    /* font-size: 1.2rem !important; */
+}
+
+
+/* Now styling for Footer */
+
+.footer{
+    background-color: #333;
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+    /* bottom: 0; */
+    width: 100%;
+}
+
+
+.f-info-links a{
+    text-decoration: none;
+    color: #333;
+}
+
+.f-info-links a:hover{
+    color: #d02ded;
+    text-decoration: underline;
+}
+
+.f-info-links,
+.f-info-brand{
+    width: 100%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.f-info-social, .f-info-brand{
+    width: 100%;
+    margin-right: 2rem;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.f-info-social i{
+    margin-right: 1rem;
+    font-size: 1.5rem;
+}
+
+.f-info{
+    display: flex;
+    background-color: #ebebeb;
+    height: 5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+    text-align: center;
+
+}
+
+
+/* Now styling for Cards */
+
+.listing-card{
+    
+    border: none !important; 
+    margin-bottom: 1rem;
+    
+}
+
+.card-img-top{
+    /* height: 200px; */
+    object-fit: cover !important; 
+    border-radius: 1rem !important;
+    width: 100% !important;
+}
+
+.card-body{
+    padding: 0 !important;
+    
+}
+
+.card-text{
+    /* font-size: 1.2rem; */
+    font-weight: 400 !important;
+    
+}
+
+/* Card effect */
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+
+
+
+
+
+
+

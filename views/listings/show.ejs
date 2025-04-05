@@ -1,0 +1,95 @@
+<!-- layout function is used to include the boilerplate code in the ejs file. -->
+<% layout("/layouts/boilerplate") %>
+
+
+<div class="card listing-card   offset-3 mt-1" style="width: 30rem;">
+  <img 
+    src="<%= listing.image.url %>" 
+    class="card-img-top img-fluid " 
+    alt="Image" 
+    style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px;"
+  >
+  <div class="card-body">
+    <h5 class="card-title"><%= listing.title %></h5>
+    <p class="card-text"><%= listing.description %></p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><b>Price:</b>  &#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %>/night</li>
+    <li class="list-group-item"><b>Location:</b> <%= listing.location %></li>
+    <li class="list-group-item"><b>Country: </b> <%= listing.country %></li>
+    <li class="list-group-item"><b>Owned By:</b> <%= listing.owner.username %></li>
+
+  </ul>
+
+  <% if (currentUser && currentUser._id.equals(listing.owner._id)) { %>
+  <div class="card-body d-flex align-items-center gap-2 mb-3">
+    <a href="http://localhost:8080/listings/<%= listing._id %>/edit" class="card-link"><button class="btn  btn-primary ">EDIT</button></a>
+    <form method="post" action="http://localhost:8080/listings/<%= listing._id %>?_method=DELETE">
+      <button class=" btn  btn-danger ">DELETE</button>
+    </form>
+  </div>
+  <% } else { %>
+    <div class="card-body d-flex align-items-center gap-2 mb-3 mt-2">
+      <form method="get" action="/bookings/<%= listing._id %>">
+        <button class="btn btn-primary">BOOK NOW</button>
+      </form>
+    </div>
+  <% } %>
+</div>
+<!-- Creating review -->
+
+<div>
+  <% if (currentUser) { %>
+  <hr>
+  <h4>Leave a Review</h4>
+  <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate  class="needs-validation">
+    <div class="mb-3 mt-3" >
+      <label for="rating"  class="form-label"></label>Rating:</label>
+      <fieldset class="starability-slot">
+        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+        <label for="first-rate1" title="Terrible">1 star</label>
+        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+        <label for="first-rate2" title="Not good">2 stars</label>
+        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+        <label for="first-rate3" title="Average">3 stars</label>
+        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+        <label for="first-rate4" title="Very good">4 stars</label>
+        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+        <label for="first-rate5" title="Amazing">5 stars</label>
+      </fieldset>
+    </div>
+  
+    
+    <div class="mb-3 mt-3" >
+      <label for="comment" class="form-label">Comments</label>
+      <textarea name="review[comment]" class="form-control" id="comment" rows="3" required></textarea>
+      <div class="invalid-feedback">Please add a comment.</div>
+      <button type="submit" class="btn btn-outline-dark mt-3 ">Submit</button>
+    </div>
+  </form>
+<% } %>
+</div> 
+
+<div>
+  <hr>
+  <h4>All Reviews</h4>
+  <div class="row ">
+    <% for (let review of listing.reviews) { %>
+    <div class="card col-5 ms-3 mt-3 mb-3" >
+      <div class="card-body">
+        <h5 class="card-title"><%= review.author.username %></h5>
+        <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+        <p class="card-text">Comment: <%= review.comment %></p>
+      </div>
+      <% if (currentUser && currentUser._id.equals(review.author._id)) { %>
+      <form class="mb-2 mt-2" method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+        <button class="btn btn-sm btn-danger">Delete</button>
+      </form>
+      <% } %>
+    </div>
+    <% } %>
+  </div>
+
+
+</div>

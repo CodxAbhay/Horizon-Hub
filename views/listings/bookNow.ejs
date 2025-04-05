@@ -1,0 +1,73 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100 mb-4">
+  <div class="card p-4 shadow-lg rounded-lg" style="max-width: 500px; width: 100%; background: #f8f9fa;">
+    <h2 class="text-center mb-3 fw-bold" style="color: #343a40;">Confirm Your Booking</h2>
+
+    <!-- Price and Location Details -->
+    <div class="p-3 mb-3 rounded shadow-sm" style="background: #ffffff;">
+      <h5 class="text-primary">
+        <i class="fas fa-map-marker-alt"></i> <%= listing.location %>, <%= listing.country %>
+      </h5>
+      <h6 class="text-success mt-2">
+        <i class="fas fa-tag"></i> Price: ₹<%= listing.price.toLocaleString("en-IN") %> / night
+      </h6>
+    </div>
+
+    <!-- Booking Form -->
+    <form action="/listings/<%= listing._id %>/book" method="post" >
+      <div class="mb-3">
+        <label for="fullName" class="form-label fw-semibold">Full Name</label>
+        <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Your full name" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="checkin" class="form-label fw-semibold">Check-in Date</label>
+        <input type="date" id="checkin" name="checkin" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="checkout" class="form-label fw-semibold">Check-out Date</label>
+        <input type="date" id="checkout" name="checkout" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="guests" class="form-label fw-semibold">Guests</label>
+        <select id="guests" name="guests" class="form-select" required>
+          <% for(let i = 1; i <= 10; i++) { %>
+            <option value="<%= i %>"><%= i %> Guest<%= i > 1 ? 's' : '' %></option>
+          <% } %>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="payment" class="form-label fw-semibold">Payment Method</label>
+        <select id="payment" name="payment" class="form-select" required>
+          <option value="credit_card">💳 Credit Card</option>
+          <option value="debit_card">🏦 Debit Card</option>
+          <option value="upi">📱 UPI</option>
+          <option value="net_banking">💻 Net Banking</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="specialRequests" class="form-label fw-semibold">Special Requests (optional)</label>
+        <textarea id="specialRequests" name="specialRequests" class="form-control" rows="3" placeholder="Any special requirements or requests?"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 fw-bold" style="padding: 10px; font-size: 1.1rem;">
+        <i class="fas fa-check-circle"></i> Confirm Booking
+      </button>
+    </form>
+
+    <!-- Safety and Secure Payment Info -->
+    <div class="text-center mt-3">
+      <small class="text-muted">
+        <i class="fas fa-lock"></i> Your payment is secure with us.
+      </small>
+    </div>
+  </div>
+</div>
+
+<!-- FontAwesome for Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

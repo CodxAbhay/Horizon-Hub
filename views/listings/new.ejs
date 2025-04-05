@@ -1,0 +1,73 @@
+<% layout("/layouts/boilerplate") %>
+
+<form action="/listings" 
+  method="post" 
+  novalidate  
+  class="needs-validation" 
+  enctype="multipart/form-data">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1 class="text-center mb-4">List Your Property on Horizon Hub</h1>
+      <!-- <p class="text-center text-muted mb-4">Fill out the details below to make your property visible to thousands of users.</p> -->
+
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="3BHK Apartment near City Center" required>
+      
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <div class="invalid-feedback">
+          Please Add Title.
+        </div>
+      </div>
+      
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" id="description" class="form-control"placeholder="Spacious apartment with modern amenities..." required></textarea>
+        
+        <div class="invalid-feedback">
+          Please Add some Description.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload Image </label>
+        <input type="file" name="image" id="image" class="form-control" required>
+        <div class="invalid-feedback">
+          Please Upload an Image.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" name="price" id="price" class="form-control" placeholder="2500" required>
+      <div class="invalid-feedback">
+        Please enter a valid price.
+      </div>
+      </div>
+      
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="location" id="location" class="form-control"placeholder="Sector 62, Noida" required>
+        <div class="invalid-feedback">
+          Please choose a Location.
+        </div>
+      </div>
+      
+
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input type="text" name="country" id="country" class="form-control" placeholder="India" required>
+        <div class="invalid-feedback">
+          Please choose a Country.  
+        </div>
+      </div>
+      
+
+      <div class="d-grid gap-2 mb-3">
+        <button class="btn btn-primary btn-lg">Create Listing</button>
+      </div>
+    </div>
+  </div>
+</form>

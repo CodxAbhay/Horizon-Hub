@@ -1,0 +1,18 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card p-5 shadow-lg rounded" style="max-width: 500px; width: 100%; background: #f8f9fa;">
+    <h2 class="text-center mb-4" style="color: #343a40;">Booking Confirmed!</h2>
+    <p class="text-center mb-4">
+      Your booking has been successfully confirmed. Thank you for choosing our service!
+    </p>
+    <p class="text-center mb-4">
+      You can now return to the home to explore more details or make additional bookings.
+    </p>
+    <div class="text-center">
+      <a href="/listings/<%= listing._id %>" class="btn btn-primary fw-bold" style="padding: 10px 20px; font-size: 1.1rem;">
+        Back to Home!
+      </a>
+    </div>
+  </div>
+</div>
