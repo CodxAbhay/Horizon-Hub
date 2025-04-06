@@ -15,7 +15,7 @@ module.exports = {
             const registeredUser = await User.register(newUser,password);
             req.login(registeredUser, err => {
                 if (err) return next(err);
-                req.flash('success', 'Welcome to Wanderlust!');
+                req.flash('success', 'Welcome to Horizon Hub!');
                 res.redirect('/listings'); 
             });
         } catch(e) {
@@ -29,7 +29,7 @@ module.exports = {
     },
 
     loginUser: (req, res) => {
-        req.flash('success', 'Welcome back to Wanderlust!');
+        req.flash('success', 'Welcome back to Horizon Hub!');
         res.redirect(res.locals.redirectUrl || '/listings');
     },
 
@@ -38,7 +38,7 @@ module.exports = {
             if(err){
                 return next(err);
             }
-            req.flash('success', 'Goodbye!');
+            req.flash('success', 'See you soon, Goodbye!');
             res.redirect('/listings');
         });
     }
