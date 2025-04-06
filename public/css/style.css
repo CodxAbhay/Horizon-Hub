@@ -41,61 +41,78 @@ body{
 }
 
 
-/* Now styling for Footer */
-
-.footer{
+/*  footer styling  */
+.footer {
     background-color: #333;
-    text-align: center;
-    padding: 1rem;
-    position: relative;
-    /* bottom: 0; */
+    padding: 0.5rem 0;
     width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 0.9rem;
 }
 
+.f-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ebebeb;
+    padding: 1rem;
+    gap: 0.5rem;
+}
 
-.f-info-links a{
+.f-info-social,
+.f-info-links,
+.f-info-brand {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.f-info-social i {
+    font-size: 1.3rem;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.f-info-social i:hover {
+    color: #d02ded;
+}
+
+.f-info-links a {
     text-decoration: none;
     color: #333;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
 }
 
-.f-info-links a:hover{
+.f-info-links a:hover {
     color: #d02ded;
     text-decoration: underline;
 }
 
-.f-info-links,
-.f-info-brand{
-    width: 100%;
-    vertical-align: middle;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.f-info-brand {
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
 }
 
-.f-info-social, .f-info-brand{
-    width: 100%;
-    margin-right: 2rem;
-    vertical-align: middle;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@media (max-width: 600px) {
+    .f-info-social i {
+        font-size: 1.3rem;
+    }
+
+    .f-info-links a {
+        margin: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .f-info-brand {
+        font-size: 0.9rem;
+    }
 }
 
-.f-info-social i{
-    margin-right: 1rem;
-    font-size: 1.5rem;
-}
-
-.f-info{
-    display: flex;
-    background-color: #ebebeb;
-    height: 5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: space-evenly;
-    text-align: center;
-
-}
 
 
 /* Now styling for Cards */
