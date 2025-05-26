@@ -37,6 +37,26 @@ Horizon Hub is a full-stack web application that allows users to list, explore, 
 
 ---
 
+---
+
+## 🚀 Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/CodxAbhay/Horizon-Hub.git
+cd Horizon-Hub
+
+# Install dependencies
+npm install
+
+# Set environment variables
+touch .env
+# Add MongoDB URI, Cloudinary keys, session secret, etc.
+
+# Start the development server
+npm run dev
+
+
 ## 📸 Screenshots
 
 >![image](https://github.com/user-attachments/assets/f2f639d8-2839-463b-8325-5c91396937cc)
