@@ -23,7 +23,6 @@ Horizon Hub is a **full-stack property listing web application** that allows use
 
 * EJS Templating Engine
 * Bootstrap 5
-* Vanilla JavaScript
 
 **Backend:**
 
@@ -127,11 +126,6 @@ Contributions are always welcome!
 
 ---
 
-## 📝 License
-
-This project is licensed under the **MIT License** – you are free to use, modify, and distribute it with attribution.
-
----
 
 ## 💡 Acknowledgements
 
@@ -140,6 +134,21 @@ This project is licensed under the **MIT License** – you are free to use, modi
 * [Passport.js](http://www.passportjs.org/)
 * [Cloudinary](https://cloudinary.com/)
 * [Render](https://render.com/)
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint         | Description              | Auth Required |
+|--------|------------------|--------------------------|---------------|
+| GET    | /properties      | Get all properties       | ❌ No         |
+| POST   | /properties      | Add new property         | ✅ Yes        |
+| GET    | /properties/:id  | Get single property      | ❌ No         |
+| PUT    | /properties/:id  | Update property details  | ✅ Yes        |
+| DELETE | /properties/:id  | Delete property          | ✅ Yes        |
+| POST   | /auth/register   | User registration        | ❌ No         |
+| POST   | /auth/login      | User login               | ❌ No         |
+| GET    | /auth/logout     | Logout                   | ✅ Yes        |
 
 ---
 
