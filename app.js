@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -52,7 +54,7 @@ const User = require('./models/user.js');
 
 
 // using the mongoose to connect to the mongodb atlas 
-const dbUrl = process.env.ATLASDB_URL;
+const dbUrl = process.env.MONGO_URI;
 
 
 // connect to mongodb atlas
@@ -71,7 +73,7 @@ async function main() {
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
-        secret: process.env.SECRET,
+        secret: process.env.SESSION_SECRET,
     },
     touchAfter: 24 * 3600, // time in seconds to update the session
     // ttl: 24 * 3600, // time in seconds to expire the session
@@ -86,7 +88,7 @@ store.on("error", function (e) {
 // using the express session
 const sessionOptions = {
     store: store,
-    secret: process.env.SECRET,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     // using the session middleware

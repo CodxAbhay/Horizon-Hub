@@ -2,8 +2,6 @@
   "engines": {
     "node": "20.15.1"
   },
-  
-
   "name": "horizon-hub",
   "version": "1.0.0",
   "main": "index.js",
@@ -19,7 +17,7 @@
     "cloudinary": "^1.21.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^4.21.2",
