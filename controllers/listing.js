@@ -1,9 +1,18 @@
 const Listing = require('../models/listing');
+const RecommendationService = require('../services/recommendationService');
 
 module.exports = {
     index: async(req, res) =>{
         const allListing = await Listing.find({});
+        
+        // Get personalized recommendations for logged-in users
+        let recommendations = [];
+        if (req.user) {
+            recommendations = await RecommendationService.getRecommendationsForUser(req.user._id, 6);
+        }
+        
         res.render('./listings/index.ejs',{allListing});
+        res.render('./listings/index.ejs',{allListing, recommendations});
     },
     renderNewForm: (req, res) => {
         res.render('./listings/new.ejs');
@@ -20,7 +29,23 @@ module.exports = {
             req.flash('error', 'Cannot find that listing!');
             return res.redirect('/listings');
         }
+        
+        // Track user activity for recommendations
+        if (req.user) {
+            await RecommendationService.trackListingView(req.user._id, id);
+        }
+        
+        // Get recommendations for the user
+        let recommendations = [];
+        if (req.user) {
+            recommendations = await RecommendationService.getRecommendationsForUser(req.user._id, 4);
+        } else {
+            // For non-logged users, show trending listings
+            recommendations = await Listing.find({}).sort({ createdAt: -1 }).limit(4);
+        }
+        
         res.render('./listings/show.ejs',{listing});
+        res.render('./listings/show.ejs',{listing, recommendations});
     },
 
     createListing: async(req, res,next) =>{

@@ -93,3 +93,43 @@
 
 
 </div>
+
+<!-- Recommendations Section -->
+<% if (recommendations && recommendations.length > 0) { %>
+<div class="container mt-5">
+  <hr>
+  <h4 class="mb-4">
+    <% if (currentUser) { %>
+      Recommended for You
+    <% } else { %>
+      You Might Also Like
+    <% } %>
+  </h4>
+  <div class="row">
+    <% for (let rec of recommendations) { %>
+      <div class="col-md-3 mb-3">
+        <div class="card h-100 shadow-sm">
+          <a href="/listings/<%= rec._id %>" class="text-decoration-none">
+            <img 
+              src="<%= rec.image.url %>" 
+              class="card-img-top" 
+              alt="<%= rec.title %>"
+              style="height: 200px; object-fit: cover;"
+            >
+            <div class="card-body">
+              <h6 class="card-title text-dark"><%= rec.title %></h6>
+              <p class="card-text text-muted small">
+                <i class="fas fa-map-marker-alt"></i> <%= rec.location %>
+              </p>
+              <p class="card-text">
+                <strong class="text-success">₹<%= rec.price.toLocaleString("en-IN") %></strong>
+                <small class="text-muted">/night</small>
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+<% } %>

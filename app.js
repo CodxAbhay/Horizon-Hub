@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Listing = require('./models/listing.js');
+const RecommendationService = require('./services/recommendationService');
 const path = require('path');
 const ejsMate = require('ejs-mate');
 
@@ -40,6 +41,7 @@ const listingsRouter = require('./routes/listing.js');
 const reviewsRouter = require('./routes/review.js');
 // requiring the user routes
 const userRouter = require('./routes/user.js');
+const recommendationsRouter = require('./routes/recommendations.js');
 
 // using express session for flash messages
 const session = require('express-session');
@@ -128,6 +130,7 @@ app.use((req, res, next) => {
 app.use('/listings', listingsRouter);
 app.use('/listings/:id/reviews',reviewsRouter);
 app.use('/', userRouter);
+app.use('/', recommendationsRouter);
 
 
 // root route
@@ -142,6 +145,12 @@ app.get("/search", async (req, res, next) => {
             res.render('error.ejs',{err});
         }
         query = query.trim(); // Remove spaces from the input
+        
+        // Track search for recommendations
+        if (req.user) {
+            await RecommendationService.trackSearch(req.user._id, query);
+        }
+        
         const allListing = await Listing.find({
             $or: [
                 { title: { $regex: query, $options: "i" } }, // Case-insensitive search
