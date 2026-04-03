@@ -1,73 +1,275 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100 mb-4">
-  <div class="card p-4 shadow-lg rounded-lg" style="max-width: 500px; width: 100%; background: #f8f9fa;">
-    <h2 class="text-center mb-3 fw-bold" style="color: #343a40;">Confirm Your Booking</h2>
+<style>
+  .booking-wrapper {
+    max-width: 1000px;
+    margin: 3rem auto 5rem;
+    padding: 0 1rem;
+  }
+  
+  .booking-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .booking-side {
+    position: sticky;
+    top: 100px;
+  }
 
-    <!-- Price and Location Details -->
-    <div class="p-3 mb-3 rounded shadow-sm" style="background: #ffffff;">
-      <h5 class="text-primary">
-        <i class="fas fa-map-marker-alt"></i> <%= listing.location %>, <%= listing.country %>
-      </h5>
-      <h6 class="text-success mt-2">
-        <i class="fas fa-tag"></i> Price: ₹<%= listing.price.toLocaleString("en-IN") %> / night
-      </h6>
+  .summary-card {
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .summary-card img {
+    border-radius: var(--radius-md);
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+
+  .price-calc-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .price-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 800;
+    font-size: 1.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
+    color: var(--text-primary);
+  }
+
+  /* Loading Overlay */
+  #payment-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  
+  #payment-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    color: var(--brand);
+    margin-bottom: 1.5rem;
+  }
+</style>
+
+<div class="booking-wrapper">
+  <div class="booking-header">
+    <h1>Confirm and pay</h1>
+  </div>
+  
+  <div class="row g-5 flex-column-reverse flex-lg-row">
+    <!-- Payment & Info Form -->
+    <div class="col-lg-7 form-column">
+      <form id="bookingForm" action="/listings/<%= listing._id %>/book" method="post">
+        
+        <h4 class="mb-4">Your trip</h4>
+        <!-- Dates -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="checkin" class="form-label">Check-in</label>
+            <input type="date" id="checkin" name="checkin" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="checkout" class="form-label">Check-out</label>
+            <input type="date" id="checkout" name="checkout" class="form-control" required>
+          </div>
+        </div>
+        
+        <!-- Guests -->
+        <div class="mb-5 pb-4 border-bottom">
+          <label for="guests" class="form-label">Guests</label>
+          <select id="guests" name="guests" class="form-select w-50" required>
+            <option value="1">1 guest</option>
+            <option value="2">2 guests</option>
+            <option value="3">3 guests</option>
+            <option value="4">4 guests +</option>
+          </select>
+        </div>
+
+        <h4 class="mb-4">Pay with</h4>
+        <div class="mb-4">
+          <select id="payment" name="payment" class="form-select" style="max-width: 400px;" required>
+            <option value="credit_card">Credit or debit card</option>
+            <option value="paypal">PayPal</option>
+            <option value="gpay">Google Pay</option>
+          </select>
+        </div>
+        
+        <!-- Fake Card Details -->
+        <div id="cardDetailsBlock" class="card p-4 border-0 bg-sec mb-5 rounded-4 shadow-sm" style="background: #f7f7f9;">
+          <div class="mb-3">
+            <label class="form-label">Card number</label>
+            <input type="text" class="form-control mb-2" placeholder="0000 0000 0000 0000" maxlength="19" required>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Expiration</label>
+              <input type="text" class="form-control" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="col-6">
+              <label class="form-label">CVV</label>
+              <input type="text" class="form-control" placeholder="123" maxlength="3" required>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-brand btn-lg fw-bold px-5 py-3 rounded-pill hvr-grow">
+          Confirm and pay
+        </button>
+      </form>
     </div>
 
-    <!-- Booking Form -->
-    <form action="/listings/<%= listing._id %>/book" method="post" >
-      <div class="mb-3">
-        <label for="fullName" class="form-label fw-semibold">Full Name</label>
-        <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Your full name" required>
+    <!-- Summary Card -->
+    <div class="col-lg-5">
+      <div class="booking-side">
+        <div class="summary-card">
+          <div class="d-flex gap-3 mb-4 pb-4 border-bottom">
+            <img src="<%= listing.image.url %>" alt="Property Image" style="width: 110px; height: 100px;">
+            <div>
+              <p class="text-muted small mb-1">Entire home</p>
+              <h6 class="fw-bold fs-5 mb-1 text-truncate"><%= listing.title %></h6>
+              <p class="small mb-0"><i class="fa-solid fa-star fa-sm me-1" style="color:#ffb400;"></i> Highly rated</p>
+            </div>
+          </div>
+          
+          <h4 class="fs-5 mb-3">Price details</h4>
+          
+          <!-- Live Calculation blocks -->
+          <div class="price-calc-row">
+            <span id="nightlyCalc">₹<%= listing.price.toLocaleString("en-IN") %> x 1 night</span>
+            <span id="nightlyTotal">₹<%= listing.price.toLocaleString("en-IN") %></span>
+          </div>
+          
+          <div class="price-calc-row">
+            <span class="text-decoration-underline">Service fee (5%)</span>
+            <span id="serviceFee">₹<%= Math.floor(listing.price * 0.05).toLocaleString("en-IN") %></span>
+          </div>
+          
+          <div class="price-total">
+            <span>Total (INR)</span>
+            <span id="grandTotal">₹<%= Math.floor(listing.price * 1.05).toLocaleString("en-IN") %></span>
+          </div>
+        </div>
       </div>
-
-      <div class="mb-3">
-        <label for="checkin" class="form-label fw-semibold">Check-in Date</label>
-        <input type="date" id="checkin" name="checkin" class="form-control" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="checkout" class="form-label fw-semibold">Check-out Date</label>
-        <input type="date" id="checkout" name="checkout" class="form-control" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="guests" class="form-label fw-semibold">Guests</label>
-        <select id="guests" name="guests" class="form-select" required>
-          <% for(let i = 1; i <= 10; i++) { %>
-            <option value="<%= i %>"><%= i %> Guest<%= i > 1 ? 's' : '' %></option>
-          <% } %>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="payment" class="form-label fw-semibold">Payment Method</label>
-        <select id="payment" name="payment" class="form-select" required>
-          <option value="credit_card">💳 Credit Card</option>
-          <option value="debit_card">🏦 Debit Card</option>
-          <option value="upi">📱 UPI</option>
-          <option value="net_banking">💻 Net Banking</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="specialRequests" class="form-label fw-semibold">Special Requests (optional)</label>
-        <textarea id="specialRequests" name="specialRequests" class="form-control" rows="3" placeholder="Any special requirements or requests?"></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-primary w-100 fw-bold" style="padding: 10px; font-size: 1.1rem;">
-        <i class="fas fa-check-circle"></i> Confirm Booking
-      </button>
-    </form>
-
-    <!-- Safety and Secure Payment Info -->
-    <div class="text-center mt-3">
-      <small class="text-muted">
-        <i class="fas fa-lock"></i> Your payment is secure with us.
-      </small>
     </div>
   </div>
 </div>
 
-<!-- FontAwesome for Icons -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<!-- Simulated loading overlay -->
+<div id="payment-overlay">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <h3 class="fw-bold">Processing your payment...</h3>
+  <p class="text-muted">Please don't close this window.</p>
+</div>
+
+<!-- Initialization Data -->
+<script>
+  const basePrice = Number("<%= listing.price %>");
+</script>
+
+<!-- Logic -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const checkin = document.getElementById('checkin');
+    const checkout = document.getElementById('checkout');
+    const nightlyCalc = document.getElementById('nightlyCalc');
+    const nightlyTotal = document.getElementById('nightlyTotal');
+    const serviceFeeEl = document.getElementById('serviceFee');
+    const grandTotalEl = document.getElementById('grandTotal');
+    const form = document.getElementById('bookingForm');
+    const overlay = document.getElementById('payment-overlay');
+
+    // Set minimum checkin to today mapping
+    const today = new Date().toISOString().split('T')[0];
+    checkin.min = today;
+    
+    function calculatePrice() {
+      if(!checkin.value || !checkout.value) return;
+      
+      const inDate = new Date(checkin.value);
+      const outDate = new Date(checkout.value);
+      
+      let nights = (outDate - inDate) / (1000 * 60 * 60 * 24);
+      if(nights <= 0) {
+        checkout.value = "";
+        alert("Check-out must be after Check-in.");
+        return;
+      }
+
+      // Update UI
+      const totalCost = basePrice * nights;
+      const svc = Math.floor(totalCost * 0.05); // 5% fee
+      const grand = totalCost + svc;
+      
+      nightlyCalc.innerText = `₹${basePrice.toLocaleString("en-IN")} x ${nights} night${nights > 1?'s':''}`;
+      nightlyTotal.innerText = `₹${totalCost.toLocaleString("en-IN")}`;
+      serviceFeeEl.innerText = `₹${svc.toLocaleString("en-IN")}`;
+      grandTotalEl.innerText = `₹${grand.toLocaleString("en-IN")}`;
+    }
+
+    checkin.addEventListener('change', () => {
+      // Set min checkout to checkin + 1
+      if(checkin.value) {
+        let nextDay = new Date(checkin.value);
+        nextDay.setDate(nextDay.getDate() + 1);
+        checkout.min = nextDay.toISOString().split('T')[0];
+        calculatePrice();
+      }
+    });
+
+    checkout.addEventListener('change', calculatePrice);
+
+    const paymentSelect = document.getElementById('payment');
+    const cardBlock = document.getElementById('cardDetailsBlock');
+
+    paymentSelect.addEventListener('change', (e) => {
+      if(e.target.value === 'credit_card') {
+        cardBlock.style.display = 'block';
+        cardBlock.querySelectorAll('input').forEach(i => i.setAttribute('required', 'true'));
+      } else {
+        cardBlock.style.display = 'none';
+        cardBlock.querySelectorAll('input').forEach(i => i.removeAttribute('required'));
+      }
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      // Simulate real gateway processing
+      overlay.classList.add('active');
+      
+      setTimeout(() => {
+        form.submit();
+      }, 2500); // 2.5 seconds fake processing 
+    });
+  });
+</script>

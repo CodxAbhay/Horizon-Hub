@@ -1,50 +1,140 @@
 <% layout("/layouts/boilerplate") %>
 
 <style>
-  body {
-    background: linear-gradient(135deg, #ffffff, #f2f2f2);
-    min-height: 100vh;
-    margin: 0;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  .hero-container {
+    padding: 3rem 0 5rem;
   }
-  .hero {
+  
+  .hero-banner {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    min-height: 550px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     text-align: center;
-    padding: 0 20px;
+    background-color: var(--text-primary);
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+    box-shadow: var(--shadow-lg);
   }
-  .hero h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #333;
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 800px;
   }
-  .hero p {
+
+  .hero-content h1 {
+    color: white;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-content p {
+    color: rgba(255,255,255,0.9);
     font-size: 1.25rem;
-    margin-bottom: 30px;
-    color: #666;
+    margin-bottom: 2.5rem;
+    font-weight: 500;
   }
-  .hero .btn-group a {
-    margin: 0 10px;
+
+  .hero-action {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-white {
+    background: white !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--radius-pill);
+    padding: 1rem 2rem;
+    font-weight: 700;
     font-size: 1.1rem;
-    padding: 10px 25px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
+    border: none;
+    box-shadow: var(--shadow-md);
   }
-  .hero .btn-group a:hover {
-    transform: translateY(-3px);
+  .btn-white:hover {
+    transform: scale(1.03);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Value Proposition Below Banner */
+  .features-row {
+    margin-top: 4rem;
+  }
+  .feature-col {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+  .feature-icon-box {
+    width: 64px;
+    height: 64px;
+    background: var(--bg-sec);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .feature-icon-box i {
+    font-size: 1.5rem;
+    color: var(--brand);
+  }
+  .feature-col h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+  .feature-col p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
   }
 </style>
 
-<div class="hero">
-  <h1>Welcome to Horizon Hub</h1>
-  <p>Find luxurious homes and cozy getaways, all in one place.</p>
-  <div class="btn-group">
-    <a href="/login" class="btn btn-primary">Login</a>
-    <a href="/signup" class="btn btn-success">Sign Up</a>
-    <a href="/listings" class="btn btn-info">Explore</a>
+<div class="hero-container">
+  <div class="hero-banner">
+    <div class="hero-content">
+      <h1>Find your next adventure</h1>
+      <p>Discover beautiful homes, cabins, and unique stays around the globe.</p>
+      
+      <div class="hero-action">
+        <a href="/listings" class="btn btn-brand rounded-pill pt-3 pb-3 px-4 shadow-lg text-decoration-none d-inline-flex align-items-center fw-bold fs-5">
+          <i class="fa-solid fa-magnifying-glass me-2"></i> Start Exploring
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row features-row">
+    <div class="col-md-4">
+      <div class="feature-col">
+        <div class="feature-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+        <h4>Stay with confidence</h4>
+        <p>Verified hosts and 24/7 support means you can travel without worry.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-col">
+        <div class="feature-icon-box"><i class="fa-solid fa-house-chimney-window"></i></div>
+        <h4>Unique spaces</h4>
+        <p>From treehouses to castles, find spaces that fit your exact vibe.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="feature-col">
+        <div class="feature-icon-box"><i class="fa-solid fa-plane-departure"></i></div>
+        <h4>Flexible bookings</h4>
+        <p>Plans change. That's why we offer generous cancellation policies.</p>
+      </div>
+    </div>
   </div>
 </div>

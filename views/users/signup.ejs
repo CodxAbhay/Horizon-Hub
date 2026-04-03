@@ -1,58 +1,114 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-    <div class="col-6 offset-3">
-        <h1 class="text-center">Sign Up</h1>
-        <form action="/signup" method="post" novalidate class="needs-validation">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input 
-                    type="text" 
-                    name="username" 
-                    id="username"
-                    class="form-control" 
-                    required
-                >
-                <div class="valid-feedback">
-                  Looks good!
-                </div>
-                <div class="invalid-feedback">
-                  Please Add Username.
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input 
-                    type="password" 
-                    name="password"
-                    id="password" 
-                    class="form-control" 
-                    required
-                >
-                <div class="valid-feedback">
-                  Looks good!
-                </div>
-                <div class="invalid-feedback">
-                  Please Enter Password.
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input 
-                    type="email" 
-                    name="email"
-                    id="email" 
-                    class="form-control" 
-                    required
-                >
-                <div class="valid-feedback">
-                  Looks good!
-                </div>
-                <div class="invalid-feedback">
-                  Please Enter valid email.
-                </div>
-            </div>
-            <button class="btn btn-primary ">SignUp</button>
-        </form>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Create an account</h2>
+      <p class="text-muted">Join Horizon Hub to start traveling.</p>
     </div>
+
+    <form action="/signup" method="post" novalidate class="needs-validation">
+      
+      <div class="mb-4">
+        <label for="email" class="form-label">Email address</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="form-control"
+          placeholder="you@example.com"
+          required
+        >
+        <div class="invalid-feedback">Please enter a valid email.</div>
+      </div>
+
+      <div class="mb-4">
+        <label for="username" class="form-label">Username</label>
+        <div class="input-group has-validation">
+          <input
+            type="text"
+            name="username"
+            id="username"
+            class="form-control"
+            placeholder="e.g. explorer99"
+            required
+            autocomplete="off"
+          >
+          <span class="input-group-text d-none" id="username-spinner">
+            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+          </span>
+        </div>
+        <div id="username-feedback" class="mt-1 small fw-bold"></div>
+        <div class="form-text text-muted" style="font-size: 0.8rem;">This will be displayed on your reviews and profile.</div>
+      </div>
+
+      <div class="mb-5">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="form-control"
+          placeholder="Create a strong password"
+          required
+        >
+        <div class="invalid-feedback">Please enter a password.</div>
+      </div>
+
+      <button class="btn btn-brand w-100 py-3 mb-4 rounded-pill fs-6">
+        Agree and continue
+      </button>
+      
+      <div class="text-center mt-3">
+        <p class="text-muted m-0 small" style="font-weight: 500;">
+          Already have an account? <a href="/login" class="text-dark fw-bold text-decoration-none ms-1">Log in</a>
+        </p>
+      </div>
+    </form>
+  </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const usernameInput = document.getElementById('username');
+    const feedback = document.getElementById('username-feedback');
+    const spinner = document.getElementById('username-spinner');
+    let timeoutId;
+
+    usernameInput.addEventListener('input', () => {
+      clearTimeout(timeoutId);
+      const val = usernameInput.value.trim();
+      
+      // Reset state
+      feedback.textContent = '';
+      feedback.className = 'mt-1 small fw-bold';
+      usernameInput.classList.remove('is-valid', 'is-invalid');
+      spinner.classList.add('d-none');
+      
+      if (!val) return;
+
+      spinner.classList.remove('d-none');
+
+      timeoutId = setTimeout(async () => {
+        try {
+          const res = await fetch(`/check-username?username=${encodeURIComponent(val)}`);
+          const data = await res.json();
+          
+          spinner.classList.add('d-none');
+          
+          if (data.available) {
+            feedback.textContent = '✓ ' + data.message;
+            feedback.classList.add('text-success');
+            usernameInput.classList.add('is-valid');
+          } else {
+            feedback.textContent = '✗ ' + data.message;
+            feedback.classList.add('text-danger');
+            usernameInput.classList.add('is-invalid');
+          }
+        } catch (e) {
+          spinner.classList.add('d-none');
+        }
+      }, 500); // 500ms debounce
+    });
+  });
+</script>

@@ -7,17 +7,16 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
-
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-      folder: 'WonderLust_DEV',
-      allowedFormats: ["png", "jpg", "jpeg"]
+        folder: 'HorizonHub',
+        allowedFormats: ['png', 'jpg', 'jpeg', 'webp'],
+        transformation: [{ width: 1200, height: 800, crop: 'limit', quality: 'auto' }],
     },
 });
 
 module.exports = {
     cloudinary,
     storage
-}
+};

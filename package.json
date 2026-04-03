@@ -1,18 +1,19 @@
 {
   "engines": {
-    "node": "20.15.1"
+    "node": ">=18.0.0"
   },
   "name": "horizon-hub",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.1.0",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["property-listing", "rental", "nodejs", "express", "mongodb"],
   "author": "Abhay Pratap Verma",
   "license": "ISC",
-  "description": "Full stack web application for managing and sharing resources, built with Node.js, Express, MongoDB, and Cloudinary.",
+  "description": "Full stack property listing web application for managing and booking homes, built with Node.js, Express, MongoDB, Cloudinary, and Passport.js.",
   "dependencies": {
     "cloudinary": "^1.21.0",
     "connect-flash": "^0.1.1",
@@ -21,10 +22,13 @@
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
     "joi": "^17.13.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.9.6",
+    "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",
     "passport": "^0.7.0",

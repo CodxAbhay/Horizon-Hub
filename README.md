@@ -2,90 +2,94 @@
 
 **Live Demo:** [https://horizon-hub.onrender.com](https://horizon-hub.onrender.com)
 
-Horizon Hub is a **full-stack property listing web application** that allows users to list, explore, and manage properties like houses, hotels, and rentals. Built with the **MERN (MongoDB, Express, Node.js)** stack and styled with **Bootstrap + EJS** for a clean and responsive UI.
+Horizon Hub is a **full-stack property listing and booking web application** that allows users to discover, list, review, and book unique stays — from beachside villas to mountain retreats. Built with the **Node.js / Express / MongoDB** stack and styled with **Bootstrap 5 + EJS**.
 
 ---
 
 ## ✨ Features
 
-* 🏡 **Property Management** – Add, view, edit, and delete property listings
-* 🔐 **Authentication** – Secure login & signup with Passport.js
-* 📷 **Image Uploads** – Upload property images via Cloudinary
-* 📍 **Location Mapping** – Integration for better visualization
-* 🧾 **RESTful API** – Clean and scalable backend structure
-* 📱 **Responsive UI** – Works seamlessly on mobile, tablet, and desktop
+| Feature | Description |
+|---|---|
+| 🏡 **Property Listings** | Add, view, edit, and delete property listings with image upload |
+| 🔐 **Authentication** | Secure signup / login with Passport.js (session-based) |
+| 📷 **Image Uploads** | Upload property images via Cloudinary CDN with auto-optimization |
+| 🔍 **Search** | Search listings by title, location, or country |
+| 🏷️ **Category Filters** | Filter listings by category — House, Mountain, Beach, Castle, etc. |
+| ⭐ **Reviews & Ratings** | Leave star ratings and comments; average rating shown on cards |
+| 📅 **Booking System** | Book any property with check-in, checkout, and guest details |
+| 🛡️ **Security** | Helmet, Rate Limiting, CSRF-safe sessions, secure cookies in production |
+| 📱 **Responsive UI** | Works seamlessly on mobile, tablet, and desktop |
+| ✅ **Input Validation** | Client-side + server-side (Joi) validation with friendly error messages |
 
 ---
 
 ## ⚙️ Tech Stack
 
 **Frontend:**
-
-* EJS Templating Engine
-* Bootstrap 5
+- EJS Templating Engine + EJS-Mate layouts
+- Bootstrap 5.3
+- Font Awesome 6 icons
+- Google Fonts (Inter)
 
 **Backend:**
+- Node.js + Express.js
+- MongoDB (Mongoose ODM)
+- Passport.js (Local Strategy authentication)
+- Cloudinary (Image storage + optimization)
+- Multer (File upload handling)
 
-* Node.js
-* Express.js
-* MongoDB (Mongoose ODM)
-* Passport.js (Authentication)
-* Cloudinary (Image Hosting)
+**Security:**
+- Helmet (HTTP security headers)
+- express-rate-limit (Brute force protection)
+- connect-mongo (Session persistence in MongoDB)
+- bcrypt (via passport-local-mongoose)
 
-**DevOps & Tools:**
-
-* Render (Deployment)
-* GitHub (Version Control)
+**DevOps:**
+- Render (Deployment)
+- MongoDB Atlas (Database)
+- GitHub (Version Control)
 
 ---
 
 ## 🚀 Getting Started
 
-### 1️⃣ Clone the Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/CodxAbhay/Horizon-Hub.git
 cd Horizon-Hub
 ```
 
-### 2️⃣ Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3️⃣ Setup Environment Variables
+### 3. Setup Environment Variables
 
-Create a `.env` file in the root directory with the following:
+Create a `.env` file in the root directory:
 
 ```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-SESSION_SECRET=your_secret_key
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/horizon-hub?retryWrites=true&w=majority
+SESSION_SECRET=your_long_random_secret_key
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+PORT=8080
 ```
 
-### 4️⃣ Run the Application
+### 4. Configure MongoDB Atlas
+
+> **Important:** In your MongoDB Atlas dashboard → Network Access → Add your current IP address (or `0.0.0.0/0` for development).
+
+### 5. Run the Application
 
 ```bash
 npm start
 ```
 
-Visit 👉 `http://localhost:5000`
-
----
-
-## 📸 Screenshots
-
-> ## ![image](https://github.com/user-attachments/assets/f2f639d8-2839-463b-8325-5c91396937cc)
->
-> ## ![image](https://github.com/user-attachments/assets/832d7ad4-f66a-4853-9bef-696dd87d982e)
-
-## ![image](https://github.com/user-attachments/assets/e8cf1b9f-9384-45f3-9266-0cf5ded2916c)
-
-![image](https://github.com/user-attachments/assets/e6d49562-093b-4016-8af3-cd06c5ccfc04)
+Visit 👉 `http://localhost:8080`
 
 ---
 
@@ -93,65 +97,95 @@ Visit 👉 `http://localhost:5000`
 
 ```
 Horizon-Hub/
-│-- config/         # Passport & DB configurations
-│-- models/         # Mongoose schemas
-│-- routes/         # Express routes
-│-- views/          # EJS templates
-│-- public/         # Static files (CSS, JS, Images)
-│-- app.js          # Main app entry point
-│-- package.json
+├── controllers/        # Route handler logic
+│   ├── listing.js      #   Listing CRUD operations
+│   ├── reviews.js      #   Review post/delete
+│   └── users.js        #   Auth (signup, login, logout)
+├── models/             # Mongoose schemas
+│   ├── listing.js      #   Listing model (with category, image, owner)
+│   ├── review.js       #   Review model (rating, comment, author)
+│   └── user.js         #   User model (email, passport plugin)
+├── routes/             # Express routers
+│   ├── listing.js
+│   ├── review.js
+│   └── user.js
+├── views/              # EJS templates
+│   ├── layouts/        #   boilerplate.ejs
+│   ├── includes/       #   navbar, footer, flash
+│   ├── listings/       #   index, show, new, edit, search, bookNow
+│   └── users/          #   login, signup
+├── public/             # Static files
+│   ├── css/style.css
+│   └── js/script.js
+├── utils/              # Utility helpers
+│   ├── ExpressError.js #   Custom error class
+│   └── wrapAsync.js    #   Async error wrapper
+├── middleware.js        # Auth guards + validation middleware
+├── schema.js           # Joi validation schemas
+├── cloudConfig.js      # Cloudinary config + Multer storage
+└── app.js              # Express app entry point
 ```
-
----
-
-## 🧑‍💻 Contributing
-
-Contributions are always welcome!
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature-xyz`)
-3. Commit your changes (`git commit -m "Add new feature"`)
-4. Push to the branch (`git push origin feature-xyz`)
-5. Open a Pull Request
-
----
-
-## 🔮 Future Enhancements
-
-* 🌍 Integration with Google Maps API
-* ⭐ Property ratings & reviews
-* 🛒 Booking system for rentals & hotels
-* 📊 Admin dashboard with analytics
-* 🤖 AI/ML-based **Price Prediction** for properties (upcoming 🚀)
-
----
-
-
-## 💡 Acknowledgements
-
-* [Bootstrap](https://getbootstrap.com/)
-* [EJS](https://ejs.co/)
-* [Passport.js](http://www.passportjs.org/)
-* [Cloudinary](https://cloudinary.com/)
-* [Render](https://render.com/)
 
 ---
 
 ## 📡 API Endpoints
 
-| Method | Endpoint         | Description              | Auth Required |
-|--------|------------------|--------------------------|---------------|
-| GET    | /properties      | Get all properties       | ❌ No         |
-| POST   | /properties      | Add new property         | ✅ Yes        |
-| GET    | /properties/:id  | Get single property      | ❌ No         |
-| PUT    | /properties/:id  | Update property details  | ✅ Yes        |
-| DELETE | /properties/:id  | Delete property          | ✅ Yes        |
-| POST   | /auth/register   | User registration        | ❌ No         |
-| POST   | /auth/login      | User login               | ❌ No         |
-| GET    | /auth/logout     | Logout                   | ✅ Yes        |
+| Method | Endpoint | Description | Auth |
+|--------|---|---|---|
+| GET | `/listings` | All listings (optional `?category=`) | ❌ |
+| POST | `/listings` | Create new listing | ✅ |
+| GET | `/listings/new` | Render create form | ✅ |
+| GET | `/listings/:id` | View listing detail | ❌ |
+| PUT | `/listings/:id` | Update listing | ✅ Owner |
+| DELETE | `/listings/:id` | Delete listing | ✅ Owner |
+| GET | `/listings/:id/edit` | Render edit form | ✅ Owner |
+| POST | `/listings/:id/reviews` | Post a review | ✅ |
+| DELETE | `/listings/:id/reviews/:reviewId` | Delete a review | ✅ Author |
+| GET | `/signup` | Render signup form | ❌ |
+| POST | `/signup` | Register user | ❌ |
+| GET | `/login` | Render login form | ❌ |
+| POST | `/login` | Login user | ❌ |
+| GET | `/logout` | Logout user | ✅ |
+| GET | `/search?query=` | Search listings | ❌ |
+| GET | `/bookings/:id` | Book Now page | ✅ |
+| POST | `/listings/:id/book` | Confirm booking | ✅ |
 
 ---
 
-👉 If you like this project, don’t forget to ⭐ the repo on GitHub!
+## 🌐 Deploying to Render
+
+1. Push your code to GitHub
+2. Create a new **Web Service** on [Render](https://render.com)
+3. Set **Build Command**: `npm install`
+4. Set **Start Command**: `node app.js`
+5. Add all environment variables in the Render dashboard:
+   - `MONGO_URI`
+   - `SESSION_SECRET`
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+   - `NODE_ENV` = `production`
+6. In MongoDB Atlas → Network Access → Allow `0.0.0.0/0` (all IPs, required for Render)
 
 ---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 👨‍💻 Author
+
+**Abhay Pratap Verma**
+- GitHub: [@CodxAbhay](https://github.com/CodxAbhay)
+- LinkedIn: [abhay07v](https://www.linkedin.com/in/abhay07v/)
+- Instagram: [@abhayverma.07](https://www.instagram.com/abhayverma.07/)
+
+---
+
+⭐ If you find this project helpful, please give it a star on GitHub!

@@ -1,10 +1,28 @@
 <% layout("/layouts/boilerplate") %>
 
-
-<div class="row mt-5 ">
-    <div class="alert alert-danger col-6 offset-3" role="alert">
-        <p><%= err.message %></p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 130px);">
+  <div class="text-center" style="max-width: 480px; padding: 2rem 1rem;">
+    <div style="font-size: 5rem; margin-bottom: 1rem;">😕</div>
+    <h1 class="fw-bold mb-2" style="font-size: 1.8rem; color: #222;">
+      <% if (err && err.statusCode) { %>
+        <%= err.statusCode %> — 
+      <% } %>
+      <%= err && err.message ? err.message : 'Something went wrong!' %>
+    </h1>
+    <p class="text-muted mb-4">
+      <% if (err && err.statusCode === 404) { %>
+        The page you're looking for doesn't exist or has been moved.
+      <% } else { %>
+        An unexpected error occurred. Please try again later.
+      <% } %>
+    </p>
+    <div class="d-flex gap-2 justify-content-center">
+      <a href="/listings" class="btn btn-danger">
+        <i class="fa-solid fa-house me-1"></i>Go to Listings
+      </a>
+      <a href="javascript:history.back()" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left me-1"></i>Go Back
+      </a>
     </div>
+  </div>
 </div>
-
-

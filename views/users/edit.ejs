@@ -1,0 +1,91 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .edit-profile-card {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+  }
+  .form-label {
+    font-weight: 700;
+    color: #444;
+  }
+  .form-control {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.8rem;
+    background-color: #f8f9fa;
+    border: 1.5px solid #eaeaea;
+    transition: all 0.3s ease;
+  }
+  .form-control:focus {
+    background-color: #fff;
+    border-color: #ff4500;
+    box-shadow: 0 0 0 4px rgba(255,69,0,0.1);
+  }
+  .avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="row">
+  <div class="col-8 offset-2">
+    <div class="edit-profile-card">
+      <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+        <h2 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-user-pen me-2 text-danger"></i>Edit Profile</h2>
+      </div>
+
+      <form method="POST" action="/profile?_method=PUT" class="needs-validation" novalidate enctype="multipart/form-data">
+        
+        <div class="text-center mb-4">
+          <img src="<%= user.avatar.url %>" alt="Current Avatar" class="avatar-preview">
+          <div class="mb-3">
+            <label for="avatar" class="form-label d-block text-muted" style="font-size: 0.85rem;">Update Profile Picture</label>
+            <input class="form-control form-control-sm mx-auto" type="file" id="avatar" name="avatar" style="max-width:300px;">
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="user[username]" value="<%= user.username %>" class="form-control" required disabled>
+            <div class="form-text text-muted"><i class="fa-solid fa-circle-info me-1"></i>Usernames cannot be changed.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" name="user[email]" value="<%= user.email %>" class="form-control" required disabled>
+            <div class="form-text text-muted"><i class="fa-solid fa-circle-info me-1"></i>Email address is linked to your account.</div>
+          </div>
+        </div>
+
+        <div class="mb-3 mt-4">
+          <label for="phone" class="form-label">Phone Number</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-phone text-muted"></i></span>
+            <input type="text" name="user[phone]" value="<%= user.phone || '' %>" class="form-control border-start-0 ps-0" placeholder="e.g. +91 9876543210" maxlength="20">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="bio" class="form-label">About Me (Bio)</label>
+          <textarea name="user[bio]" class="form-control" rows="4" placeholder="Tell hosts and guests a little about yourself..."><%= user.bio || '' %></textarea>
+        </div>
+
+        <div class="d-flex gap-3 justify-content-end mt-5 pt-3 border-top">
+          <a href="/profile" class="btn btn-light px-4 py-2 rounded-pill fw-bold" style="border: 2px solid #eee;">Cancel</a>
+          <button class="btn btn-danger px-4 py-2 rounded-pill fw-bold">
+            <i class="fa-solid fa-floppy-disk me-2"></i>Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

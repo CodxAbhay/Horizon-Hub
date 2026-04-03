@@ -1,68 +1,79 @@
+<% /* Safety guard */ %>
+<% const _user = (typeof currentUser !== 'undefined') ? currentUser : null; %>
 
-<style>
-  .search-btn{
-    background-color: #ff4500;
-    color: #fff;
-    border-radius: 25px;
-    padding: 0rem 1rem 0rem 1rem;
-  }
-  .search-btn:hover{
-    background-color: #ff4500;
-    color: #fff;
-  }
-  .search-btn i{
-    display: inline;
-    margin-right: 0.5rem;
-  }
-  .search-inp{
-    border-radius: 25px;
-    padding: 0.5rem 0.5rem 0.5rem 3rem ;
-    font-size: 0.9rem;
-  }
+<nav class="navbar navbar-expand-lg border-bottom sticky-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/listings">
+      <i class="fa-brands fa-atlassian"></i>
+      <span>HorizonHub</span>
+    </a>
 
-</style>
+    <button
+      class="navbar-toggler border-0 shadow-none px-2"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarContent"
+    >
+      <i class="fa-solid fa-bars fs-3 text-dark"></i>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <div class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <a class="nav-link" href="/listings">
+          <i class="fa-solid fa-compass me-1 text-danger"></i> Explore
+        </a>
+      </div>
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/listings"><i class="fa-brands fa-atlassian"></i></i></a>
-      <button 
-        class="navbar-toggler" 
-        type="button" 
-        data-bs-toggle="collapse" 
-        data-bs-target="#navbarNavAltMarkup" 
-        aria-controls="navbarNavAltMarkup" 
-        aria-expanded="false" a
-        ria-label="Toggle navigation"
-      >
-      <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">          
-          <a class="nav-link" href="/listings">Explore</a>
-        </div>
-        <div class="navbar-nav ms-auto">
-          <form method="get" action="/search" class="d-flex" role="search">
-            <input 
-              class="form-control me-2 search-inp" 
-              type="search" 
-              placeholder="Location/Country/Title" 
-              aria-label="Search"
-              name="query" 
-            >
-            <button class="btn search-btn" type="submit"> <i class="fa-solid fa-magnifying-glass"></i>Search</button>
-          </form>
-        </div>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link fw-medium" href="/listings/new">Add your home</a>
-          <% if(!currentUser) { %>
-            <a class="nav-link "  href="/signup"><b>Sign Up</b></a>
-            <a class="nav-link" href="/login"><b>Log in</b></a>
-          <% } %>
-          <% if(currentUser) { %>
-            <a class="nav-link" href="/logout"><b>Log out</b></a>
-          <% } %>
-        </div>
+      <div class="navbar-nav mx-auto mb-3 mb-lg-0 w-100" style="max-width: 400px;">
+        <form method="get" action="/search" class="d-flex w-100 shadow-sm rounded-pill overflow-hidden bg-white pe-1 p-1">
+          <input
+            class="form-control border-0 shadow-none ps-3 bg-transparent"
+            type="search"
+            placeholder="Search destinations..."
+            name="query"
+            required
+          >
+          <button class="btn btn-danger rounded-pill px-3 py-1" type="submit" style="min-width: 40px;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </div>
+
+      <div class="navbar-nav ms-auto gap-3 align-items-center mt-3 mt-lg-0">
+        <a class="nav-link fw-bold text-dark d-none d-lg-block" href="/listings/new">
+          List your property
+        </a>
+        
+        <% if (!_user) { %>
+          <div class="d-flex gap-2 w-100">
+            <a class="btn btn-outline-danger w-100" href="/signup">Sign Up</a>
+            <a class="btn btn-danger w-100" href="/login">Log In</a>
+          </div>
+        <% } else { %>
+          <div class="dropdown w-100 text-end">
+            <a class="text-decoration-none dropdown-toggle d-flex align-items-center justify-content-end gap-2 text-dark fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <% if(_user.avatar && _user.avatar.url) { %>
+                <img src="<%= _user.avatar.url %>" class="nav-profile-img" alt="avatar">
+              <% } else { %>
+                <div class="nav-profile-img bg-light d-flex align-items-center justify-content-center border">
+                  <i class="fa-solid fa-user text-muted"></i>
+                </div>
+              <% } %>
+              <span class="d-lg-none"><%= _user.username %></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
+              <li class="px-3 py-2 border-bottom mb-1">
+                <span class="fw-bold d-block"><%= _user.username %></span>
+                <span class="text-muted small"><%= _user.email %></span>
+              </li>
+              <li><a class="dropdown-item" href="/profile"><i class="fa-regular fa-id-badge me-2 text-muted"></i>Profile</a></li>
+              <li><a class="dropdown-item" href="/listings/new"><i class="fa-solid fa-plus me-2 text-muted"></i>Add Listing</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Log Out</a></li>
+            </ul>
+          </div>
+        <% } %>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

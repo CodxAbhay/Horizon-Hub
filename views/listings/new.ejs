@@ -1,73 +1,81 @@
 <% layout("/layouts/boilerplate") %>
 
-<form action="/listings" 
-  method="post" 
-  novalidate  
-  class="needs-validation" 
-  enctype="multipart/form-data">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <h1 class="text-center mb-4">List Your Property on Horizon Hub</h1>
-      <!-- <p class="text-center text-muted mb-4">Fill out the details below to make your property visible to thousands of users.</p> -->
 
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" name="title" id="title" class="form-control" placeholder="3BHK Apartment near City Center" required>
-      
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-        <div class="invalid-feedback">
-          Please Add Title.
-        </div>
-      </div>
-      
+<form
+  action="/listings"
+  method="post"
+  novalidate
+  class="needs-validation"
+  enctype="multipart/form-data"
+>
+<div class="card shadow-sm border-0 rounded-4 mx-auto my-5" style="max-width: 620px;">
+  <div class="card-body p-4 p-md-5">
+    <h1 class="fw-bold mb-2">List Your Property</h1>
+    <p class="text-muted mb-4">Fill out the details below to make your property visible to thousands of users on Horizon Hub.</p>
 
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea name="description" id="description" class="form-control"placeholder="Spacious apartment with modern amenities..." required></textarea>
-        
-        <div class="invalid-feedback">
-          Please Add some Description.
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="image" class="form-label">Upload Image </label>
-        <input type="file" name="image" id="image" class="form-control" required>
-        <div class="invalid-feedback">
-          Please Upload an Image.
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
-        <input type="number" name="price" id="price" class="form-control" placeholder="2500" required>
-      <div class="invalid-feedback">
-        Please enter a valid price.
-      </div>
-      </div>
-      
+    <div class="mb-3">
+      <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+      <input type="text" name="title" id="title" class="form-control" placeholder="3BHK Apartment near City Center" required minlength="3">
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please enter a title (min 3 characters).</div>
+    </div>
 
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input type="text" name="location" id="location" class="form-control"placeholder="Sector 62, Noida" required>
-        <div class="invalid-feedback">
-          Please choose a Location.
-        </div>
-      </div>
-      
+    <div class="mb-3">
+      <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+      <textarea name="description" id="description" class="form-control" rows="4" placeholder="Spacious apartment with modern amenities, great views..." required minlength="10"></textarea>
+      <div class="invalid-feedback">Please add a description (min 10 characters).</div>
+    </div>
 
-      <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select name="category" id="category" class="form-select">
+        <option value="Other">Select a category...</option>
+        <option value="Trending">🔥 Trending</option>
+        <option value="House">🏠 House</option>
+        <option value="Mountain">⛰️ Mountain</option>
+        <option value="Castle">🏰 Castle</option>
+        <option value="Pool">🏊 Pool</option>
+        <option value="Camping">⛺ Camping</option>
+        <option value="Farm">🚜 Farm</option>
+        <option value="Boat">⛵ Boat</option>
+        <option value="Arctic">❄️ Arctic</option>
+        <option value="Lake">🏞️ Lake</option>
+        <option value="Beach">🏖️ Beach</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label">Property Image <span class="text-danger">*</span></label>
+      <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
+      <div class="form-text text-muted">Supported: JPG, PNG, WEBP. Max recommended: 5MB.</div>
+      <div class="invalid-feedback">Please upload an image.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price per night (₹) <span class="text-danger">*</span></label>
+      <div class="input-group">
+        <span class="input-group-text">₹</span>
+        <input type="number" name="price" id="price" class="form-control" placeholder="2500" required min="0">
+      </div>
+      <div class="invalid-feedback">Please enter a valid price.</div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+        <input type="text" name="location" id="location" class="form-control" placeholder="Sector 62, Noida" required>
+        <div class="invalid-feedback">Please enter a location.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="country" class="form-label">Country <span class="text-danger">*</span></label>
         <input type="text" name="country" id="country" class="form-control" placeholder="India" required>
-        <div class="invalid-feedback">
-          Please choose a Country.  
-        </div>
-      </div>
-      
-
-      <div class="d-grid gap-2 mb-3">
-        <button class="btn btn-primary btn-lg">Create Listing</button>
+        <div class="invalid-feedback">Please enter a country.</div>
       </div>
     </div>
+
+    <button class="btn btn-danger w-100 rounded-pill py-3 fw-bold mt-4">
+      <i class="fa-solid fa-plus-circle me-2"></i>Create Listing
+    </button>
   </div>
+</div>
 </form>

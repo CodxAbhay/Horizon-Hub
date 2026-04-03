@@ -1,18 +1,43 @@
-<footer>
-    <div class="f-info">
-        <div class="f-info-social">
-            <a href="#"><i class="fa-brands fa-facebook"></i></a>
-            <a href="https://www.instagram.com/abhayverma.07/"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.linkedin.com/in/abhay07v/"><i class="fa-brands fa-linkedin"></i></a>
+<footer class="mt-auto">
+    <div class="f-info container rounded-top-4 shadow-sm mb-0 pb-4">
+        <div class="row w-100 text-center text-md-start">
+            <div class="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center align-items-md-start">
+                <a class="navbar-brand d-flex align-items-center gap-2 mb-3 text-decoration-none" href="/listings">
+                    <i class="fa-brands fa-atlassian text-danger fs-3"></i>
+                    <span class="fs-4 fw-bold text-dark">HorizonHub</span>
+                </a>
+                <p class="text-muted small mb-0 w-75">Discover unparalleled stays across the globe. Your next great adventure starts here.</p>
+            </div>
+
+            <div class="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center">
+                <h6 class="fw-bold mb-3 text-dark">Quick Links</h6>
+                <div class="f-info-links d-flex flex-column gap-2 text-center">
+                    <a href="/listings">Explore Destinations</a>
+                    <a href="/listings/new">Become a Host</a>
+                    <a href="#">Trust & Safety</a>
+                    <a href="#">Help Center</a>
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex flex-column align-items-center align-items-md-end">
+                <h6 class="fw-bold mb-3 text-dark">Connect With Us</h6>
+                <div class="f-info-social d-flex gap-2">
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/abhayverma.07/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/abhay07v/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://github.com/CodxAbhay" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
         </div>
 
-        <div class="f-info-brand">&copy; HorizonHub Private Limited</div>
-
-        <div class="f-info-links">
-            <a href="/listings">About Us</a>
-            <a href="/listings">Contact Us</a>
-            <a href="/listings">Terms of Use</a>
-            <a href="/listings">Privacy Policy</a>
+        <div class="w-100 mt-4 pt-4 border-top text-center">
+            <div class="f-info-brand text-muted">
+                &copy; <%= new Date().getFullYear() %> HorizonHub Private Limited. All rights reserved.
+            </div>
+            <div class="f-info-links d-flex justify-content-center gap-3 mt-2">
+                <a href="#" class="small text-muted text-decoration-underline" style="font-size: 0.75rem;">Privacy Policy</a>
+                <a href="#" class="small text-muted text-decoration-underline" style="font-size: 0.75rem;">Terms of Service</a>
+            </div>
         </div>
     </div>
 </footer>

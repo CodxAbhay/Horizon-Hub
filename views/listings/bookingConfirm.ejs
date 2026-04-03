@@ -1,18 +1,143 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
-  <div class="card p-5 shadow-lg rounded" style="max-width: 500px; width: 100%; background: #f8f9fa;">
-    <h2 class="text-center mb-4" style="color: #343a40;">Booking Confirmed!</h2>
-    <p class="text-center mb-4">
-      Your booking has been successfully confirmed. Thank you for choosing our service!
-    </p>
-    <p class="text-center mb-4">
-      You can now return to the home to explore more details or make additional bookings.
-    </p>
-    <div class="text-center">
-      <a href="/listings/<%= listing._id %>" class="btn btn-primary fw-bold" style="padding: 10px 20px; font-size: 1.1rem;">
-        Back to Home!
-      </a>
+<style>
+  .receipt-wrapper {
+    max-width: 600px;
+    margin: 4rem auto 6rem;
+  }
+  
+  .receipt-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+  
+  .receipt-header {
+    background: var(--brand);
+    color: white;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  
+  .receipt-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 0 10px rgba(255,255,255,0.1);
+  }
+  
+  .receipt-body {
+    padding: 2.5rem;
+    position: relative;
+  }
+  
+  /* Ticket perforated edge simulation */
+  .receipt-body::after, .receipt-body::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    width: 30px;
+    height: 30px;
+    background: var(--bg-base);
+    border-radius: 50%;
+    z-index: 10;
+  }
+  
+  .receipt-body::before { left: -15px; }
+  .receipt-body::after { right: -15px; }
+
+  .receipt-line {
+    border-top: 2px dashed var(--border-color);
+    margin: 2rem 0;
+  }
+  
+  .receipt-detail {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+  }
+  
+  .receipt-detail strong {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+  
+  .id-badge {
+    background: var(--bg-sec);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    display: inline-block;
+  }
+</style>
+
+<div class="receipt-wrapper">
+  <div class="receipt-card">
+    <div class="receipt-header">
+      <div class="receipt-icon">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h2 class="mb-2 text-white fw-bold">Payment Successful</h2>
+      <p class="mb-0 opacity-75">Your reservation is confirmed</p>
     </div>
+    
+    <div class="receipt-body">
+      <div class="text-center mb-4">
+        <p class="text-muted small text-uppercase fw-bold mb-2">Booking Reference</p>
+        <% 
+           // Generate a fake booking ID for realism
+           const fakeId = 'BKG-' + Math.random().toString(36).substr(2, 6).toUpperCase(); 
+        %>
+        <div class="id-badge"><%= fakeId %></div>
+      </div>
+      
+      <div class="receipt-line"></div>
+      
+      <div class="receipt-detail">
+        <span>Property</span>
+        <strong class="text-end" style="max-width: 60%;"><%= listing.title %></strong>
+      </div>
+      
+      <div class="receipt-detail">
+        <span>Location</span>
+        <strong><%= listing.location %>, <%= listing.country %></strong>
+      </div>
+      
+      <div class="receipt-detail">
+        <span>Date Confirmed</span>
+        <strong><%= new Date().toLocaleDateString('en-US', { day:'numeric', month:'short', year:'numeric' }) %></strong>
+      </div>
+      
+      <div class="receipt-line"></div>
+      
+      <div class="receipt-detail" style="font-size: 1.25rem;">
+        <span class="fw-bold text-dark">Amount Paid</span>
+        <strong class="text-success">₹<%= Math.floor(listing.price * 1.05).toLocaleString("en-IN") %></strong>
+      </div>
+      
+      <p class="text-center text-muted small mt-5 mb-0">A confirmation email has been sent to your registered address.</p>
+    </div>
+  </div>
+  
+  <div class="d-flex justify-content-center gap-3 mt-4">
+    <a href="/listings" class="btn btn-outline-dark-custom rounded-pill fw-bold">
+      <i class="fa-solid fa-arrow-left me-2"></i> Explore More
+    </a>
+    <a href="/listings/<%= listing._id %>" class="btn btn-brand rounded-pill px-4 fw-bold shadow">
+      View Property
+    </a>
   </div>
 </div>

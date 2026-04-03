@@ -1,143 +1,253 @@
-
 <% layout("/layouts/boilerplate") %>
 
 <style>
+  /* Category Filters (Premium design) */
   #filters {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-}
+    margin: 1.5rem 0 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none; /* Firefox */
+  }
+  #filters::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
 
-.filter {
-  margin-right: 2rem;
-  text-align: center;
-  opacity: 0.7;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
+  .filter-link {
+    text-decoration: none;
+    color: inherit;
+  }
 
-.filter i {
-  font-size: 24px;
-  transition: color 0.3s ease;
-}
+  .filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.6;
+    transition: var(--transition);
+    min-width: max-content;
+    cursor: pointer;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid transparent;
+  }
 
-.filter:hover {
-  opacity: 1;
-  cursor: pointer;
-  transform: scale(1.05);
-}
+  .filter i {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+  }
 
-.filter:hover i,
-.filter:hover p {
-  color: #ff4500; 
-}
+  .filter p {
+    font-size: 0.85rem;
+    margin: 0;
+    font-weight: 600;
+  }
 
-.filter p{
-  font-size: 0.9rem;
-}
-.price-info{
-  display: none;
-}
+  .filter:hover, .filter.active {
+    opacity: 1;
+    border-bottom: 2px solid var(--text-main);
+  }
 
-.tax-toggle{
-  border: 1px solid black;
-  border-radius: 0.7rem;
-  height: 2.5rem;
-  padding: 1rem;
-  margin-left: 5rem;
-  display: flex;
-  align-items: center;
+  .filter:hover i, .filter.active i {
+    color: var(--text-main);
+  }
 
-}
+  /* Price Toggle Modernized */
+  .tax-toggle {
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-pill);
+    padding: 0.5rem 1.25rem;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    position: sticky;
+    right: 0;
+  }
 
+  .price-info { display: none; }
+
+  /* Listings Grid */
+  .listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .listing-card-wrap {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: var(--transition);
+  }
+
+  .listing-card {
+    border: none;
+    background: transparent;
+  }
+
+  .card-img-wrapper {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    aspect-ratio: 1 / 0.95;
+    margin-bottom: 0.8rem;
+  }
+
+  .listing-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .listing-card-wrap:hover .card-img-wrapper img {
+    transform: scale(1.05);
+  }
+
+  .listing-card-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0 0 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .listing-card-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0 0 0.2rem;
+  }
+
+  .listing-card-price {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-main);
+    margin-top: 0.4rem;
+  }
+
+  .listing-card-price .price-info {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
 </style>
 
-<div id="filters" class=" ms-auto">
-  <div class="filter">
-    <div><i class="fa-solid fa-fire-flame-curved"></i></div>
-    <p>Trending</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-house-user"></i></div>
-    <p>House</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain-sun"></i></div>
-    <p>Mountain</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-brands fa-fort-awesome"></i></div>
-    <p>Castles</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-person-swimming"></i></div>
-    <p>Pools</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-tents"></i></div>
-    <p>Camping</p>
+<!-- Filters -->
+<div id="filters">
+  <div class="d-flex align-items-center gap-4 flex-grow-1 overflow-x-auto pe-3">
+    <a href="/listings" class="filter-link">
+      <div class="filter <%= !activeCategory ? 'active' : '' %>">
+        <i class="fa-solid fa-list"></i><p>All Homes</p>
+      </div>
+    </a>
+    <a href="/listings?category=Trending" class="filter-link">
+      <div class="filter <%= activeCategory === 'Trending' ? 'active' : '' %>">
+        <i class="fa-solid fa-fire"></i><p>Trending</p>
+      </div>
+    </a>
+    <a href="/listings?category=House" class="filter-link">
+      <div class="filter <%= activeCategory === 'House' ? 'active' : '' %>">
+        <i class="fa-solid fa-house"></i><p>Houses</p>
+      </div>
+    </a>
+    <a href="/listings?category=Mountain" class="filter-link">
+      <div class="filter <%= activeCategory === 'Mountain' ? 'active' : '' %>">
+        <i class="fa-solid fa-mountain"></i><p>Mountains</p>
+      </div>
+    </a>
+    <a href="/listings?category=Pool" class="filter-link">
+      <div class="filter <%= activeCategory === 'Pool' ? 'active' : '' %>">
+        <i class="fa-solid fa-water-ladder"></i><p>Amazing pools</p>
+      </div>
+    </a>
+    <a href="/listings?category=Beach" class="filter-link">
+      <div class="filter <%= activeCategory === 'Beach' ? 'active' : '' %>">
+        <i class="fa-solid fa-umbrella-beach"></i><p>Beachfront</p>
+      </div>
+    </a>
+    <a href="/listings?category=Lake" class="filter-link">
+      <div class="filter <%= activeCategory === 'Lake' ? 'active' : '' %>">
+        <i class="fa-solid fa-water"></i><p>Lakefront</p>
+      </div>
+    </a>
+    <a href="/listings?category=Castle" class="filter-link">
+      <div class="filter <%= activeCategory === 'Castle' ? 'active' : '' %>">
+        <i class="fa-brands fa-fort-awesome"></i><p>Castles</p>
+      </div>
+    </a>
+    <a href="/listings?category=Farm" class="filter-link">
+      <div class="filter <%= activeCategory === 'Farm' ? 'active' : '' %>">
+        <i class="fa-solid fa-tractor"></i><p>Farms</p>
+      </div>
+    </a>
   </div>
   
-  <div class="filter">
-    <div><i class="fa-solid fa-tractor"></i></div>
-    <p>Farms</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-sailboat"></i></div>
-    <p>Boats</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-snowman"></i></div>
-    <p>Arctic</p>
-  </div>
-  <!-- <div class="filter">
-    <div><i class="fa-solid fa-water"></i></div>
-    <p>Lake</p>
-  </div> -->
-  
-  <div class="tax-toggle">
-    <div class="form-check form-switch">
-      <input class="form-check-input" 
-      type="checkbox" 
-      role="switch" 
-      id="flexSwitchCheckDefault">
-      <label class="form-check-label" for="flexSwitchCheckDefault">Display Price</label>
+  <div class="tax-toggle ms-auto flex-shrink-0 d-none d-md-flex">
+    <div class="form-check form-switch mb-0 d-flex align-items-center gap-2">
+      <input class="form-check-input mt-0" type="checkbox" role="switch" id="flexSwitchCheckDefault" style="width: 2.2em; height: 1.1em; cursor:pointer;">
+      <label class="form-check-label pt-1" for="flexSwitchCheckDefault" style="cursor:pointer;">Display total before taxes</label>
     </div>
   </div>
-
 </div>
 
-
-<div class=" row mt-3">
-    <% for(let list of allListing) { %>
-        <div class="card listing-card " style="width: 20rem;">
-        <a href="/listings/<%= list._id %>">
-            <img src="<%= list.image.url %>" class="card-img-top  " alt="Image" style="height: 17rem;">
-            <div class="card-img-overlay"></div>
-        </a>
-            <div class="card-body">
-              <p class="card-text">
-                <b><%= list.title %></b> <br> 
-                <p class="price-info fw-medium">Price: &#8377;<%= list.price ? list.price.toLocaleString("en-IN") : "N/A" %>/night</p>
-              </p>
-            </div>
+<!-- Grid -->
+<% if (listingsWithRating.length === 0) { %>
+  <div class="text-center py-5 my-5">
+    <i class="fa-solid fa-binoculars mb-3 text-muted" style="font-size: 3rem;"></i>
+    <h3 class="fw-bold">No exact matches</h3>
+    <p class="text-muted">Try changing or removing your filters to find more properties.</p>
+    <a href="/listings" class="btn btn-dark rounded-pill px-4 mt-2 fw-bold">Clear all filters</a>
+  </div>
+<% } else { %>
+  <div class="listings-grid pb-5">
+    <% for (let { listing, avgRating } of listingsWithRating) { %>
+      <a href="/listings/<%= listing._id %>" class="listing-card-wrap">
+        <div class="listing-card">
+          <div class="card-img-wrapper">
+            <img src="<%= listing.image.url %>" alt="<%= listing.title %>" loading="lazy">
+          </div>
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="listing-card-title"><%= listing.location %>, <%= listing.country %></h5>
+            <% if (avgRating) { %>
+              <div class="rating-badge"><i class="fa-solid fa-star"></i><%= avgRating %></div>
+            <% } else { %>
+              <div class="rating-badge text-muted" style="font-weight:400;">New</div>
+            <% } %>
+          </div>
+          <p class="listing-card-sub text-truncate"><%= listing.title %></p>
+          <p class="listing-card-price">
+            ₹<%= listing.price.toLocaleString('en-IN') %> <span class="price-info"> total</span>
+            <span class="fw-normal text-muted" style="font-size:0.9rem;"> night</span>
+          </p>
         </div>
-        <% } %>
-</div>
-
+      </a>
+    <% } %>
+  </div>
+<% } %>
 
 <script>
-  let totalGst = document.getElementById("flexSwitchCheckDefault");
-  document.addEventListener("click", () =>{
-    let total = document.getElementsByClassName('price-info');
-    if(totalGst.checked){
-      for(let i = 0; i < total.length; i++){
-        total[i].style.display = 'inline';
-      }
-    }
-    else{
-      for(let i = 0; i < total.length; i++){
-        total[i].style.display = 'none';
-      }
-    }
-  })
+  const priceToggle = document.getElementById('flexSwitchCheckDefault');
+  if (priceToggle) {
+      priceToggle.addEventListener('change', () => {
+        document.querySelectorAll('.price-info').forEach(el => {
+          el.style.display = priceToggle.checked ? 'inline' : 'none';
+        });
+      });
+  }
 </script>

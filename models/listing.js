@@ -1,20 +1,52 @@
 const mongoose = require('mongoose');
-
-// defining the variable so that we do not need to write mongoose.Schema again and again 
 const Schema = mongoose.Schema;
 
-// defining the schema for the listing
+const CATEGORIES = [
+    'Trending', 'House', 'Mountain', 'Castle', 'Pool',
+    'Camping', 'Farm', 'Boat', 'Arctic', 'Lake', 'Beach', 'Other'
+];
 
 const listingSchema = new Schema({
-    title: String,
-    description: String,
-    image: {
-        url: String,
-        filename: String 
+    title: {
+        type: String,
+        required: true,
+        trim: true,
     },
-    price: Number,
-    location: String,
-    country: String,
+    description: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    image: {
+        url: {
+            type: String,
+            default: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&auto=format&fit=crop&q=80'
+        },
+        filename: {
+            type: String,
+            default: 'default'
+        }
+    },
+    price: {
+        type: Number,
+        required: true,
+        min: 0,
+    },
+    location: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    country: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    category: {
+        type: String,
+        enum: CATEGORIES,
+        default: 'Other',
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,
@@ -25,20 +57,24 @@ const listingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-});
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    }
+}, { timestamps: true });
 
-// creating a post middleware to delete the reviews associated with the listing
-// this will run after the listing is deleted
+// Cascade delete reviews when a listing is deleted
 listingSchema.post('findOneAndDelete', async (listing) => {
-    if (listing.reviews.length) {
+    if (listing && listing.reviews.length) {
         const Review = require('./review');
         await Review.deleteMany({ _id: { $in: listing.reviews } });
     }
 });
-    
 
-// using this schema we will create a model
+// Virtual: average rating
+listingSchema.virtual('averageRating').get(function () {
+    return null; // Populated at query time in controller
+});
+
 const Listing = mongoose.model('Listing', listingSchema);
-
-// exporting the model
 module.exports = Listing;
