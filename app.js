@@ -114,6 +114,9 @@ const sessionOptions = {
     }
 };
 
+// Trust proxy is required for secure cookies behind Render's reverse proxy
+app.set('trust proxy', 1);
+
 // ─── Session & Flash ──────────────────────────────────────────────────────────
 app.use(session(sessionOptions));
 const flash = require('connect-flash');
